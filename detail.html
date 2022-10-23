@@ -2,6 +2,7 @@
 <head>
 		<meta charset="utf-8" />
 		<title>音乐收集网站</title>
+		<link rel="stylesheet" href="./icon/css/font-awesome.css">
 		<style type="text/css">
 			@font-face {
 				font-family: 'webfont';
@@ -49,7 +50,7 @@
 			
 			.menu {
 				width: 1000px;
-				margin: 0 auto;
+				margin-left: 22.5px;
 				overflow: hidden;
 			}
 			
@@ -96,11 +97,32 @@
                 height: 50px;
             }
 
-            .kk {
+			.cover {
                 position: relative;
                 top: 150px;
 				left: 200px;
+            }
+
+            .content {
+                position: relative;
+                top: 250px;
+				left: 200px;
             }  
+
+			
+
+			.class1 {
+				font-family: 楷体;
+			}
+
+			#cover:before{
+				content: '';
+				display: block;
+				width: 300px;
+				height: 300px;
+				background: url(image/cover.png);
+				background-size: cover;
+			}
 		</style>
 
 	
@@ -124,9 +146,13 @@
         </div>
     </div>
 
-    <div class="kk">
-        <img src="image/cover.png" width="300" height="300"><br><br>
+	<div class="cover" id="cover"></div>
+
+    <div class="content">
+        
 		<i class="web-font">介绍：</i>
+		
+		<p class="class1">这里是歌曲的介绍或者评论</p>
     </div>
 
 </body>
