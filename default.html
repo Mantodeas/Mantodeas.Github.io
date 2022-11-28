@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>动态表格</title>
+ 
+    <style>
+        table{
+            border: 1px solid;
+            margin: auto;
+            width: 500px;
+        }
+ 
+        tr,td,th{
+            text-align: center;
+            border: 1px solid;
+            height: 20px;
+        }
+
+        div{
+            text-align: center;
+            margin: 50px;
+        }
+
+        .button{
+            margin: 5px;
+        }
+    </style>
+ 
+</head>
+<body>
+ 
+<div>
+    <input type="text" id="id" placeholder="请输入">
+    <input type="text" id="name"  placeholder="请输入">
+    <input type="text" id="gender"  placeholder="请输入">
+    <input type="button" value="添加" id="btn_add">
+ 
+</div>
+ 
+<table id = "table">
+    <caption>表</caption>
+    <tr>
+        <th>1</th>
+        <th>2</th>
+        <th>3</th>
+        <th>操作</th>
+    </tr>
+ 
+    <a href="javascript:void(0);" onclick="deltr(this);"></a> 
+</table>
+
+<script>
+    var edit = false;
+
+    function del(obj){
+        var ta = obj.parentNode.parentNode.parentNode;
+        var tr = obj.parentNode.parentNode;
+        ta.deleteRow(tr.rowIndex);
+    }
+
+    function update(obj){
+        var tr = obj.parentNode.parentNode;
+        if(obj.value == "修改" && !edit){
+            obj.value = "保存";
+            edit = true;
+            for(var i=0; i<3; i++){
+                tr.cells[i].innerHTML = "<input type = 'text' value = '"+tr.cells[i].innerHTML+"' id = 'edit' onblur = 'updatee(this)'/>";
+            } 
+        }
+        else if(obj.value == "保存"){
+            edit = false;
+            obj.value = "修改";
+            for(var i=0; i<3; i++){
+                tr.cells[i].innerHTML = document.getElementById("edit").value;
+            } 
+        }
+    }
+
+    function updatee(obj){
+        var tr = obj.parentNode.parentNode;
+        obj.setAttribute('value', 10);
+    }
+
+    
+
+    document.getElementById("btn_add").onclick = function () {
+        //2.获取文本框的内容
+        var id = document.getElementById("id").value;
+        var name = document.getElementById("name").value;
+        var gender = document.getElementById("gender").value;
+        var ta = document.getElementById("table");
+        var tr = ta.insertRow(1);
+
+        var cell0 = tr.insertCell(0);
+        cell0.innerHTML = id;
+        var cell1 = tr.insertCell(1);
+        cell1.innerHTML = name;
+        var cell2 = tr.insertCell(2);
+        cell2.innerHTML = gender;
+        var cell3 = tr.insertCell(3);
+        cell3.innerHTML = "<input type = 'button' class = 'button' value = '修改' onclick = 'update(this)'/><input type = 'button' class = 'button' value = '删除' onclick = 'del(this)'/>";
+    }
+</script>
+ 
+</body>
+</html>

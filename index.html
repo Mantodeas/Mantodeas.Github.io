@@ -4,6 +4,7 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>音乐收集网站</title>
+		<script src="./js/lib/jquery-1.11.1.js"></script>
 		<link rel="stylesheet" href="./icon/css/font-awesome.css">
 		<style type="text/css">
 			* {
@@ -57,9 +58,11 @@
 				margin: 0 auto;
 				padding: 12px;
                 top: 100px;
-				left: 10px;
+				left: 0px;
 				height: 1000px;
 				width: 1000px;
+				opacity: 0;
+				font-size: 50px;
 				justify-items: center;
 				justify-self: center;
 				color: blue;
@@ -110,11 +113,23 @@
 		</div>
 
 		<div class="grid">
-			<header>大滚动页</header>
+			<header id = "ani">大滚动页</header>
 			<side1>小列表</side1>
 			<side2>小列表</side2>
 			<side3>小列表</side3>
 		</div>
+
+		<script>
+			
+			$(document).ready(function(){
+				$(".grid").animate({
+					fontSize: '30px',
+					opacity:1
+				}, "slow");
+				
+			});
+			
+		</script>
 	</body>
  
 </html>
