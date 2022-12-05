@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+ 
+	<head>
+		<meta charset="utf-8" />
+		<title>音乐收集网站</title>
+		<script src="./js/lib/jquery-1.11.1.js"></script>
+		<link rel="stylesheet" href="./icon/css/font-awesome.css">
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			.top {
+				position: fixed;
+				left: 0;
+				right: 0;
+				top: 0;
+				z-index: 999;
+				height: 50px;
+				background-color: rgba(0, 0, 0, 0.6);
+			}
+			
+			.menu {
+				width: 1000px;
+				margin-left: 22.5px;
+				overflow: hidden;
+			}
+			
+			.nav {
+				float: left;
+				margin-top: 10px;
+				font-size: 0;
+			}
+			
+			.nav li {
+				display: inline-block;
+				margin-left: 40px;
+			}
+			
+			.nav a {
+				display: inline-block;
+				height: 30px;
+				line-height: 30px;
+				font-size: 12px;
+				color: #fff;
+				text-decoration: none;
+			}
+			
+			.nav a:hover {
+				color: #83c3f3;
+			}
+
+			.grid{
+				display: grid;
+				position: relative;
+				margin: 0 auto;
+				padding: 12px;
+                top: 100px;
+				left: 0px;
+				height: 1000px;
+				width: 1000px;
+				opacity: 0;
+				font-size: 50px;
+				justify-items: center;
+				justify-self: center;
+				color: blue;
+				grid-template-areas: 
+					"header header header"
+					"side1 side2 side3"
+					"side1 side2 side3";
+			}
+
+			.grid header{
+				grid-area: header;
+			}
+
+			.grid side1{
+				grid-area: side1;
+			}
+
+			.grid side2{
+				grid-area: side2;
+			}
+
+			.grid side3{
+				grid-area: side3;
+			}
+
+			.grid p{
+				display: box;
+			}
+		</style>
+	</head>
+ 
+	<body>
+		<div class="top">
+			<div class="menu">
+				<ul class="nav">
+					<li>
+						<a href="/index.html">首页</a>
+					</li>
+					<li>
+						<a href="/list.html">列表</a>
+					</li>
+                    <li>
+						<a href="/question.html">新建</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="grid">
+			<header id = "ani">大滚动页</header>
+			<side1>小列表</side1>
+			<side2>小列表</side2>
+			<side3>小列表</side3>
+		</div>
+
+		<script>
+			
+			$(document).ready(function(){
+				$(".grid").animate({
+					fontSize: '30px',
+					opacity:1
+				}, "slow");
+				
+			});
+			
+		</script>
+	</body>
+ 
+</html>

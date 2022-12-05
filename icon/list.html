@@ -1,0 +1,151 @@
+<!DOCTYPE html> 	
+<html>
+	
+	<head>
+		<meta charset="utf-8" />
+		<title>音乐收集网站</title>
+		<script src="./js/lib/jquery-1.11.1.js"></script>
+		<link rel="stylesheet" href="./icon/css/font-awesome.css">
+		<style type="text/css">
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			ul {
+				list-style-type: none;
+			}
+			
+			.top {
+				position: fixed;
+				left: 0;
+				right: 0;
+				top: 0;
+				z-index: 999;
+				height: 50px;
+				background-color: rgba(0, 0, 0, 0.6);
+			}
+			
+			.menu {
+				width: 1000px;
+				margin-left: 22.5px;
+				overflow: hidden;
+			}
+			
+			.logo {
+				float: left;
+				margin-top: 9px;
+			}
+			
+			.nav {
+				float: left;
+				margin-top: 10px;
+				font-size: 0;
+			}
+			
+			.nav li {
+				display: inline-block;
+				margin-left: 40px;
+			}
+			
+			.nav a {
+				display: inline-block;
+				height: 30px;
+				line-height: 30px;
+				font-size: 12px;
+				color: #fff;
+				text-decoration: none;
+			}
+			
+			.nav a:hover {
+				color: #83c3f3;
+			}
+
+            .list {
+                position: relative;
+				display: flex;
+				margin: 12px;
+				padding: 12px;
+				flex-direction: column;
+                top: 100px;
+				left: 10px;
+			}  
+
+			.list a{
+				margin-top: 4px;
+				margin-bottom: 4px;
+				font-size: 20px;
+			}
+
+			.list a:hover{
+				color: rgb(102, 173, 255);
+			}
+			
+			#add_button{
+				margin: 5px;
+				width: 60px;
+			}
+			
+			tr,td,th{
+            text-align: center;
+            border: 1px none;
+            height: 20px;
+        }
+
+		</style>
+	</head>
+	
+	<body>
+		<div class="top">
+			<div class="menu">
+				<ul class="nav">
+					<li>
+						<a href="/index.html">首页</a>
+					</li>
+					<li>
+						<a href="/list.html">列表</a>
+					</li>
+					<li>
+						<a href="/question.html">新建</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<input type="button" value="添加" class="list" id="add_button">
+		<input type="button" value="删除" class="list" id="delete_button">
+		<table class = "list" id="list">
+			
+			<tr>
+				<th>列表</th>
+			</tr>
+		</table>
+		
+		<script>
+			var count=1;
+			$(document).ready(function(){
+				count = localStorage.getItem("count");
+				for(var i=1; i<count; i++){
+					var ta = document.getElementById("list");
+					var tr = ta.insertRow(1);
+					var cell0 = tr.insertCell(0);
+					cell0.innerHTML = "<a href='/music.html'  class='fa fa-music' aria-hidden='true'>歌曲</a>";
+				}
+				console.log(count);
+				document.getElementById("add_button").onclick = function () {
+					var ta = document.getElementById("list");
+					var tr = ta.insertRow(1);
+					var cell0 = tr.insertCell(0);
+					cell0.innerHTML = "<a href='/music.html'  class='fa fa-music' aria-hidden='true'>歌曲</a>";
+					count++;
+					localStorage.setItem("count", count);
+				}
+				document.getElementById("delete_button").onclick = function () {
+					count = 1;
+					localStorage.setItem("count", count);
+					location.replace("list.html");
+				}
+			});
+		</script>
+		
+	</body>
+</html>
