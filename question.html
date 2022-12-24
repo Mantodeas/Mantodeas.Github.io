@@ -1,6 +1,11 @@
 <head>
 		<meta charset="utf-8" />
 		<title>音乐收集网站</title>
+		<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+		<script src="./js/lib/jquery-1.11.1.js"></script>
+		<script src="./js/cookie.js"></script>
+		<script src="https://cdn.bootcss.com/FileSaver.js/1.3.8/FileSaver.js"></script>
+		<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
 		<style type="text/css">
 			* {
 				margin: 0;
@@ -25,19 +30,6 @@
 				width: 1000px;
 				margin-left: 22.5px;
 				overflow: hidden;
-			}
-			
-			.logo {
-				float: left;
-				margin-top: 9px;
-			}
-			
-			.logo a {
-				display: inline-block;
-				width: 32px;
-				height: 32px;
-				background-image: url("http://temp.im/32x32/4CD964/fff");
-				background-size: 32px 32px;
 			}
 			
 			.nav {
@@ -70,11 +62,47 @@
                 height: 50px;
             }
 
-            .kk {
-                position: relative;
+			.container{
+				position: absolute;
+				margin: auto;
+				top: 0;
+				left: 0;
+				right: 0;
+				bottom: 0;
+			}
+
+			.container .row{
+				position: relative;
+				margin: auto;
+				top: 30%;
+			}
+
+            .note1 {
+                position: fixed;
                 top: 100px;
 				left: 40px;
-            }  
+				opacity: 50%;
+            }
+
+			.note3 {
+                position: fixed;
+                top: 100px;
+				right: 40px;
+				opacity: 50%;
+            } 
+
+			.note2 img{
+				width: 400px;
+				height: 200px;
+			}
+
+			.note2 {
+                position: fixed;
+				bottom: 30px;
+				left: 600px;
+				size: 100px;
+				opacity: 50%;
+            } 
 		</style>
 	</head>
 
@@ -94,14 +122,54 @@
 				</ul>
 			</div>
 		</div>
+
+		<div class="container">
+			<div class="row">
+				<div class="offset-md-3 col-md-6">
+					<div class="form-container">
+						<div class="form-group">
+							<label for="exampleInputEmail1">歌曲名</label>
+							<input type="text" class="form-control" name="musicname" id="musicname">
+						</div>
+						<div class="form-group">
+							<label for="exampleInputPassword1">歌手</label>
+							<input type="text" class="form-control" name="singername" id="singername">
+						</div>
+						<button type="submit" class="btn btn-success btn-block" id="submit" onclick="submit()">提交</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="note1">
+			<img src="./image/note1.jpg" alt="">
+		</div>
+
+		<div class="note2">
+			<img src="./image/note2.jpg" alt="">
+		</div>
+
+		<div class="note3">
+			<img src="./image/note3.jpg" alt="">
+		</div>
+	
 	</body>
 
-<form class="kk">
-Music name: <input type="text" name="musicname"><br>
-Author name: <input type="text" name="authorname"><br><br>
-Music: <input type="text" name="music"><br>
-Image: <input type="text" name="image"><br>
-Web: <input type="text" name="web"><br><br>
-Comment: <input type="text" name="comment"><br><br>
-</form>
-<input type="submit" value="Submit" class="kk">
+	<script> 
+		var count = localStorage.getItem("count");
+
+		function submit(){
+			var musicname = document.getElementById("musicname").value;
+			var singername = document.getElementById("singername").value;
+			
+			localStorage.setItem(count, musicname);
+			localStorage.setItem(musicname, singername);
+			count++;
+			localStorage.setItem("count", count);
+			alert("新增成功！");
+			window.history.go(0);
+
+		}
+	
+	</script>
+

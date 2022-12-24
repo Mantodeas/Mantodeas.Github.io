@@ -1,9 +1,9 @@
 .page{ position: absolute; z-index: 1; width: 100%; height: 100%; }
-.page::before{ position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: -30px; z-index: -1; content: ''; background: url(../music-img/0.jpg) no-repeat; background-size:100% 100%; filter: blur(20px); }
+.page::before{ position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: -30px; opacity: 70%; z-index: -1; content: ''; background:url(../image/background.jpg) no-repeat; background-size:100% 100%; filter: blur(20px);}
 .main{ margin: 0 auto 0 auto; width: 70%; height: 90%; }
 .main .Lbox{ width: 50%; height: 100%; text-align: center; display: inline-block; }
 .main .Lbox img{ margin: 100px 0 40px 0; width: 260px; height: 260px; border-radius: 10px; }
-.main .Lbox .download{ width: 220px; height: 50px; line-height: 50px; text-align: center; font-size: 18px; border-radius: 30px; border: 2px #666 solid }
+.main .Lbox .oplay .Iconfont{ position: absolute;  line-height: 200%; font-size: 50px; top: 21%; left: 31%;}
 .main .Rbox{ padding-top: 60px; width: 50%; height: 100%; color: rgba(79, 72, 67, 0.9); font-weight: bold; text-align: center; }
 .main .Rbox h2{ font-size: 22px; color: rgba(0,0,0,0.6); }
 .main .Rbox span{ font-size: 18px; margin: 10px 0 10px 0; color: rgba(0,0,0,0.6); }
@@ -12,7 +12,10 @@
 .main .Rbox .Lyric::-webkit-scrollbar-thumb{ border-radius: 10px; -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2); background: rgba(0,0,0,0.1); }
 .main .Rbox .Lyric::-webkit-scrollbar-track { -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2); border-radius: 10px; background: rgba(255,255,255,0.1); }
 .main .Rbox p{ font-size: 16px; margin: 8px 0 8px 0; }
+.main .close { position: absolute; top: 7%; right: 8%; opacity: 40%;}
 .footer{ width: 100%; height: 100%; background-color: rgba(0,0,0,0.5); }
+.footer .main .delete { position: absolute; top: 94%; right: 8%; opacity: 40%;}
+.footer .main .delete img { width: 20px; height: 20px; }
 .footer span{ color: #bababa; }
 .footer .main div{ display: inline-block; }
 .footer .main{ width: 80%; height: 10%; text-align: center; margin: 0 auto 0 auto; }
@@ -24,7 +27,7 @@
 .footer .main .right .list::-webkit-scrollbar{ width: 8px; height: 1px; }
 .footer .main .right .list::-webkit-scrollbar-thumb{ border-radius: 8px; -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.5); background: #808080; }
 .footer .main .right .list::-webkit-scrollbar-track { -webkit-box-shadow: inset 0 0 5px rgba(0,0,0,0.2); border-radius: 10px; background: #d9d9d9; }
-.footer .main .right .listTriangle{ position: absolute; bottom: 30px; right: 30px; border-left: 35px solid transparent; border-right: 35px solid transparent; border-top: 35px solid rgba(0,0,0,0.6);; }
+.footer .main .right .listTriangle{ position: absolute; bottom: 30px; right: 30px; border-left: 35px solid transparent; border-right: 35px solid transparent; border-top: 35px solid rgba(0,0,0,0.6); }
 .footer .main .right .gengduoBox{ position: absolute; top: -65px; right: -14px; width: 60px; height: 60px; background-color: rgba(0,0,0,0.6);; border-radius: 5px;  }
 .footer .main .right .boxTriangle{ position: absolute; bottom: -15px; right:15px; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 15px solid rgba(0,0,0,0.6); }
 .footer .main .right .list span{ font-size: 16px; color: rgba(255,255,255,0.6); padding: 4px 0 4px 0; width: auto; height: 30px; }
@@ -33,7 +36,7 @@
 .footer .main .right .list .Song .delete{ color: #BABABA; }
 .footer .main .right .iconfont{ line-height: 200%; font-size: 30px; }
 .footer .main .right .icon-xihuan2{ color: #e31422; }
-.footer .main .content{ position: relative; }
+.footer .main .content{ position: relative; text-align: center; }
 .footer .main .content img{ margin: 10px; width: 50px; height: 50px; border-radius: 5px; }
 .footer .main .content .iconfont{ line-height: 425%; font-size: 20px; }
 .footer .main .content .strip{ position: relative; width: 400px; height: 12px; border: 1px #666666 solid; border-radius: 10px; }

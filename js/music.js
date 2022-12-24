@@ -1,11 +1,105 @@
 window.onload = function(){
+	var count;
+	var songName;
+	var singers;
+
+	function getUrlParam(name) {
+		var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+		console.log(reg);
+		var r = window.location.search.substr(1).match(reg);
+		if (r != null) return decodeURI(r[2]); return null;
+	}
+	
+	jQuery(function(){
+		count = localStorage.getItem("count");
+		songName = getUrlParam("songname");
+		$(".songName")[0].innerHTML = songName;
+		
+		singers = localStorage.getItem(songName);
+		jQuery("#image").attr("src","./music-img/" + songName + ".jpg");
+		jQuery("#backimage").attr("src","./music-img/" + songName + ".jpg");
+		jQuery("#myMusic").attr("src","./music/ogg/" + songName + ".ogg");
+		var reader = new FileReader();
+		var strc = "./music/lrc/" + songName + ".lrc";
+		let xhr = new XMLHttpRequest();
+		xhr.open("get", strc, true);
+		xhr.responseType = "blob";
+		xhr.onload = function () {
+			if (this.status == 200) {
+				const reader = new FileReader()
+				reader.onload = function () {
+					var lrc = reader.result;						
+					var lrcArr = lrc.split("[");
+
+					/* 初始化页面 */
+					var info = $(".info")[0];
+					info.innerHTML = songName + "-" + singers;
+					
+					/* 解析lrc */
+					var html = "";
+					var oLyric = $(".Lyric")[0];
+					if(lrcArr){							
+						for(let i=0; i < lrcArr.length ; i++){
+							lrcArr = lrc.split("[");
+							arr = lrcArr[i].split("]");
+							var time = arr[0].split(".");
+							var timer = time[0].split(":");
+							var ms = timer[0] * 60 + timer[1] * 1;
+							var text = arr[1];
+							if(text){
+								html += "<p id=" + ms +">" + text + "</p>";
+							}
+							oLyric.innerHTML = html;
+							arr[0] = null; arr[1] = null;
+						}
+						html = "";
+					}
+
+					var oP = oLyric.getElementsByTagName("p");
+					/*歌词滚动*/
+					myMusic.addEventListener("timeupdate",function(){
+						
+						oTimer();
+						if($("#"+realTime)){
+							/*清除样式*/
+							for(let i=0; i < oP.length ; i++){
+								oP[i].style.cssText = "font-size: 16px;";
+							}
+							/* 歌词滚动 */
+							$("#"+realTime).style.cssText = "background: linear-gradient(-3deg,rgba(255,255,255,0.8) 0%,rgba(128,128,128,0.8) 60%);-webkit-background-clip: text;color: transparent;font-size: 20px;";
+							//获得滚动窗口距离浏览器的距离
+							var Distance1 = oLyric.offsetTop;
+							//获得当前歌词距离浏览器顶部的距离
+							var Distance2 = $("#"+realTime).offsetTop;
+							//获得当前歌词距离滚动窗口的距离
+							var Distance3 = Distance2-Distance1;
+							//获得滚动窗口的滚动距离
+							var Rolling = Distance2-Distance1-153;
+							//比较当前歌词距离滚动窗口的距离，大于153，就让窗口滚动
+							if(Distance3>153){
+								oLyric.scrollTop = Rolling;
+							}
+						}
+						/* 播放完毕归位 */
+						if(realTime >= (totalTime-1)){
+							oLyric.scrollTop = 0;
+						}
+						
+					})
+
+					
+				}
+				reader.readAsText(this.response, 'UTF-8');
+				//location.reload();
+			}
+		};
+		xhr.send();
+	});
+
 	/* 个位数转两位数 */
 	function doubleNum(n){
 		return (n <10) ? ("0" + n) : (n);
 	}
-	/* 储存信息 */
-	var songName =["至此流年各天涯", "当我唱起这首歌"]
-	var singers =["李志", "小贱"]
 	/* 动态插入css代码片段 */
 	var head = $('head')[0];
 	function loadCssCode(code){
@@ -39,97 +133,9 @@ window.onload = function(){
 			}
 		},1000)
 	}
-	/* 更新信息 */
-	function update(){
-		for(let i=0; i < 2; i++){
-			$(".songName")[i].innerHTML = songName[I];
-			$(".singer")[i].innerHTML = singers[I];
-		}
-		Txt = "#txt" + I;
-		TXT = $(Txt);
-		lrc = TXT.value;
-		Initialize();
-	}
 	/* 上一首 */
-	var I = 0; var arr = null; var Txt = null; var TXT = null;
-	var lrc = txt0.value;
-	var oLast = $(".last")[0];
-	oLast.onclick = function(){
-		--I; (I < 0) ? I = 1 : I = I;
-		if($("#style") != null){
-			head.removeChild(style);
-			loadCssCode(`.Opage::before{ position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: -30px; z-index: -1; content: ''; background: url(./music-img/${I}.jpg) no-repeat; background-size:100% 100%; filter: blur(20px); }`);
-		}else{
-			loadCssCode(`.Opage::before{ position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: -30px; z-index: -1; content: ''; background: url(./music-img/${I}.jpg) no-repeat; background-size:100% 100%; filter: blur(20px); }`);
-		}
-		$("img")[0].src = `./music-img/${I}.jpg`;
-		$("img")[1].src = `./music-img/${I}.jpg`;
-		myMusic.pause();
-		myMusic.src = `./music/ogg/${I}.ogg`;
-		Play = true;
-		oPaly.className = "play iconfont Iconfont icon-bofang";
-		oPaly.title = "暂停";
-		/* 延时获取totalTime */
-		setTimeout( function(){
-			if(myMusic.readyState == 4){
-				totalTime = parseInt(myMusic.duration);
-			}else{
-				location.reload();
-				alert("信息获取错误，自动刷新页面")
-			}
-			realTime = parseInt(myMusic.currentTime);
-			totalMinute = doubleNum(parseInt(totalTime/60));
-			totalSecond = doubleNum(totalTime%60);
-			oTotalTime.innerHTML = totalMinute + ":" + totalSecond;
-			left = 0;
-			myMusic.play();
-			oLyric.scrollTop = 0;
-			clearInterval(real);
-			oTimer();
-			progress();
-		},300);
-		/* 更新信息 */
-		update();
-	}
-	/* 下一首 */
-	var oNext = $(".next")[0];
-	oNext.onclick = function(){
-		++I; (I > 1) ? I = 0 : I = I;
-		if($("#style") != null){
-			head.removeChild(style);
-			loadCssCode(`.Opage::before{ position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: -30px; z-index: -1; content: ''; background: url(./music-img/${I}.jpg) no-repeat; background-size:100% 100%; filter: blur(20px); }`);
-		}else{
-			loadCssCode(`.Opage::before{ position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: -30px; z-index: -1; content: ''; background: url(./music-img/${I}.jpg) no-repeat; background-size:100% 100%; filter: blur(20px); }`);
-		}	
-		$("img")[0].src = `./music-img/${I}.jpg`;
-		$("img")[1].src = `./music-img/${I}.jpg`;
-		myMusic.pause();
-		myMusic.src = `./music/ogg/${I}.ogg`;
-		Play = true;
-		oPaly.className = "play iconfont Iconfont icon-bofang";
-		oPaly.title = "暂停";
-		/* 延时获取totalTime */
-		setTimeout( function(){
-			if(myMusic.readyState == 4){
-				totalTime = parseInt(myMusic.duration);
-			}else{
-				location.reload();
-				alert("信息获取错误，自动刷新页面")
-			}
-			realTime = parseInt(myMusic.currentTime);
-			totalMinute = doubleNum(parseInt(totalTime/60));
-			totalSecond = doubleNum(totalTime%60);
-			oTotalTime.innerHTML = totalMinute + ":" + totalSecond;
-			left = 0;
-			myMusic.play();
-			oLyric.scrollTop = 0;
-			clearInterval(real);
-			oTimer();
-			progress();
-		},200);
-		/* 更新信息 */
-		update();
-	}
+	var arr = null;
+	
 	/* 播放/暂停 */
 	var oPaly = $(".play")[0];
 	var Play = false;
@@ -188,7 +194,7 @@ window.onload = function(){
 		if(myMusic.readyState == 4){
 			totalTime = parseInt(myMusic.duration);
 		}else{
-			location.reload();
+			//location.reload();
 		}
 		totalMinute = doubleNum(parseInt(totalTime/60));
 		totalSecond = doubleNum(totalTime%60);
@@ -237,171 +243,26 @@ window.onload = function(){
 		oVolumeBox.style.display = "none";
 		display = false;
 	}
-	/* 单曲/列表/随机循环图标 */
-	var oLoop = $(".loop")[0];
-	var Num = 1;
-	var Company = 1;
-	oLoop.onclick = function(){
-		switch(Num){
-			case 1:
-				oLoop.className = "iconfont loop icon-suiji";
-				Num = 2;
-				myMusic.loop = false;
-				break;
-			case 2:
-				oLoop.className = "iconfont loop icon-danquxunhuan";
-				Num = 3;
-				myMusic.loop = true;
-				break;
-			case 3:
-				oLoop.className = "iconfont loop icon-liebiaoxunhuan";
-				Num = 1;
-				myMusic.loop = false;
-				break;
-		}
+
+	var closing = $(".close")[0];
+	closing.onclick = function(){
+		window.history.go(-1);
+        return false;
 	}
-	if( Num ==1 ){
-		/* 循环播放 */
-		myMusic.onended = function(){
-			oNext.click();
-		}
-	}else if( Num ==3 ){
-		/*随机播放*/
-		myMusic.onended = function(){
-			I = Math.floor(Math.random() * 2);
-			(I > 1) ? I = 0 : I = I;
-			loadCssCode(`.Opage::before{ position: absolute; top: 0; left: 0; right: 0; bottom: 0; margin: -30px; z-index: -1; content: ''; background: url(./music-img/${I}.jpg) no-repeat; background-size:100% 100%; filter: blur(20px); }`);
-			$("img")[0].src = `./music-img/${I}.jpg`;
-			$("img")[1].src = `./music-img/${I}.jpg`;
-			myMusic.pause();
-			myMusic.src = `./music/ogg/${I}.ogg`;
-			Play = true;
-			oPaly.className = "play iconfont Iconfont icon-bofang";
-			oPaly.title = "暂停";
-			/* 延时获取totalTime */
-			setTimeout( function(){
-				if(myMusic.readyState == 4){
-					totalTime = parseInt(myMusic.duration);
-				}else{
-					location.reload();
-					alert("信息获取错误，自动刷新页面")
+
+	var dele = $(".delete")[0];
+	dele.onclick = function(){
+		for(var i=0; i<count; i++)
+			if(localStorage.getItem(i) ==  songName){
+				localStorage.removeItem(songName);
+				for(var j=i; j<count-1; j++){
+					let k = j + 1;
+					localStorage.setItem(j, localStorage.getItem(k));
 				}
-				realTime = parseInt(myMusic.currentTime);
-				totalMinute = doubleNum(parseInt(totalTime/60));
-				totalSecond = doubleNum(totalTime%60);
-				oTotalTime.innerHTML = totalMinute + ":" + totalSecond;
-				left = 0;
-				myMusic.play();
-				oLyric.scrollTop = 0;
-				clearInterval(real);
-				oTimer();
-				progress();
-			},200);
-			/* 更新信息 */
-			update();
-		}
-	}
-	/* 喜爱 */
-	var oLove = $(".love")[0];
-	var state = false;
-	oLove.onclick = function(){
-		if(state){
-			oLove.className = "iconfont love icon-xihuan1";
-			state = false;
-		}else{
-			oLove.className = "iconfont love icon-xihuan2";
-			state = true;
-		}
-	}
-	/* 播放列表 */
-	var oLiebiao = $(".liebiao")[0];
-	var oList = $(".list")[0];
-	var oListTriangle = $(".listTriangle")[0];
-	var Open1 = false;
-	oLiebiao.onclick = function(){
-		if(Open1){
-			oList.style.display = "none";
-			oListTriangle.style.display = "none";
-			Open1 = false;
-		}else{
-			oList.style.display = "";
-			oListTriangle.style.display = "";
-			Open1 = true;
-		}
-	}
-	/* 更多 */
-	var oGengduo = $(".gengduo")[0];
-	var oGengduoBox = $(".gengduoBox")[0];
-	var oBoxTriangle = $(".boxTriangle")[0];
-	var Open2 = false;
-	oGengduo.onclick = function(){
-		if(Open2){
-			oGengduoBox.style.display = "none";
-			oBoxTriangle.style.display = "none";
-			Open2 = false;
-		}else{
-			oGengduoBox.style.display = "";
-			oBoxTriangle.style.display = "";
-			Open2 = true;
-		}
-	}
-	/* 初始化页面 */
-	var str = "";
-	/* 歌曲,歌手名称，歌单 */
-	for(let i=0; i < 2; i++){
-		$(".songName")[i].innerHTML = songName[0];
-		$(".singer")[i].innerHTML = singers[0];
-		str += `<p><span class="l">${songName[i]}</span><span >--</span><span class="r">${singers[i]}</span></p>`;
-		$(".Song")[0].innerHTML = str;
-	}
-	/* 解析lrc */
-	var lrcArr = lrc.split("[");
-	var html = "";
-	var oLyric = $(".Lyric")[0];
-	Initialize();
-	function Initialize(){
-		for(let i=0; i < lrcArr.length ; i++){
-			lrcArr = lrc.split("[");
-			arr = lrcArr[i].split("]");
-			var time = arr[0].split(".");
-			var timer = time[0].split(":");
-			var ms = timer[0] * 60 + timer[1] * 1;
-			var text = arr[1];
-			if(text){
-				html += "<p id=" + ms +">" + text + "</p>";
+				localStorage.removeItem(count - 1);
+				count--;
+				localStorage.setItem("count", count)
+				window.history.go(-1);
 			}
-			oLyric.innerHTML = html;
-			arr[0] = null; arr[1] = null;
-		}
-		html = "";
 	}
-	var oP = oLyric.getElementsByTagName("p");
-	/*歌词滚动*/
-	myMusic.addEventListener("timeupdate",function(){
-	    if($("#"+realTime)){
-			/*清除样式*/
-	        for(let i=0; i < oP.length ; i++){
-	            oP[i].style.cssText = "font-size: 16px;";
-	        }
-			/* 歌词滚动 */
-	        $("#"+realTime).style.cssText = "background: linear-gradient(-3deg,rgba(255,255,255,0.8) 0%,rgba(128,128,128,0.8) 60%);-webkit-background-clip: text;color: transparent;font-size: 20px;";
-			//获得滚动窗口距离浏览器的距离
-			var Distance1 = oLyric.offsetTop;
-			//获得当前歌词距离浏览器顶部的距离
-			var Distance2 = $("#"+realTime).offsetTop;
-			//获得当前歌词距离滚动窗口的距离
-			var Distance3 = Distance2-Distance1;
-			//获得滚动窗口的滚动距离
-			var Rolling = Distance2-Distance1-153;
-			//比较当前歌词距离滚动窗口的距离，大于153，就让窗口滚动
-			if(Distance3>153){
-				oLyric.scrollTop = Rolling;
-			}
-	    }
-		/* 播放完毕归位 */
-		if(realTime >= (totalTime-1)){
-			oLyric.scrollTop = 0;
-		}
-	})
-	
 }

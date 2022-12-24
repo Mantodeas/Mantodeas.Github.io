@@ -4,7 +4,9 @@
 	<head>
 		<meta charset="utf-8" />
 		<title>音乐收集网站</title>
+		<!-- <script type="text/javascript" src="./data.json"></script> -->
 		<script src="./js/lib/jquery-1.11.1.js"></script>
+		<script src="./js/cookie.js"></script>
 		<link rel="stylesheet" href="./icon/css/font-awesome.css">
 		<style type="text/css">
 			* {
@@ -24,12 +26,6 @@
 				z-index: 999;
 				height: 50px;
 				background-color: rgba(0, 0, 0, 0.6);
-			}
-			
-			.menu {
-				width: 1000px;
-				margin-left: 22.5px;
-				overflow: hidden;
 			}
 			
 			.logo {
@@ -61,15 +57,31 @@
 				color: #83c3f3;
 			}
 
+			h2{
+				color: purple;
+			}
+
             .list {
                 position: relative;
 				display: flex;
-				margin: 12px;
-				padding: 12px;
+				margin: auto;
+				padding: auto;
 				flex-direction: column;
                 top: 100px;
-				left: 10px;
+				align-self: center;
+				left: 650px;
 			}  
+
+			.list::before{
+				position: fixed; 
+				top: 0; left: 0; right: 0; bottom: 0; 
+				margin: -30px; 
+				opacity: 90%; 
+				z-index: -1; 
+				content: ''; 
+				background:url(./image/listbg.gif) no-repeat fixed 0px 0px;
+				background-size:100% 100%;
+			}
 
 			.list a{
 				margin-top: 4px;
@@ -111,39 +123,51 @@
 				</ul>
 			</div>
 		</div>
-		<input type="button" value="添加" class="list" id="add_button">
-		<input type="button" value="删除" class="list" id="delete_button">
 		<table class = "list" id="list">
 			
 			<tr>
-				<th>列表</th>
+				<th><h2>音乐列表</h2></th>
 			</tr>
 		</table>
 		
 		<script>
-			var count=1;
+			var count;
 			$(document).ready(function(){
+		
+				var init = localStorage.getItem("Init");
+				if(init != 1){
+					localStorage.setItem("count", 8);
+					localStorage.setItem("0", "黄昏");
+					localStorage.setItem("黄昏", "周传雄");
+					localStorage.setItem("1", "我的心太乱");
+					localStorage.setItem("我的心太乱", "周传雄");
+					localStorage.setItem("2", "有点甜");
+					localStorage.setItem("有点甜", "汪苏泷");
+					localStorage.setItem("3", "起风了");
+					localStorage.setItem("起风了", "周深");
+					localStorage.setItem("4", "李白");
+					localStorage.setItem("李白", "李荣浩");
+					localStorage.setItem("5", "至此流年各天涯");
+					localStorage.setItem("至此流年各天涯", "李志");
+					localStorage.setItem("6", "当我唱起这首歌");
+					localStorage.setItem("当我唱起这首歌", "小贱");
+					localStorage.setItem("7", "钗头凤");
+					localStorage.setItem("钗头凤", "薛之谦");
+					localStorage.setItem("Init", "1");
+				}
+
 				count = localStorage.getItem("count");
-				for(var i=1; i<count; i++){
+				for(var i=0; i<count; i++){
 					var ta = document.getElementById("list");
 					var tr = ta.insertRow(1);
 					var cell0 = tr.insertCell(0);
-					cell0.innerHTML = "<a href='/detail.html'  class='fa fa-music' aria-hidden='true'>歌曲</a>";
+					var songName = localStorage.getItem(i);
+					var singers = localStorage.getItem(songName);
+					
+					cell0.innerHTML = "<a href='/music.html?songname=" + songName + " '  class='fa fa-music' aria-hidden='true'>" + songName + " - " + singers + "</a>";
 				}
-				console.log(count);
-				document.getElementById("add_button").onclick = function () {
-					var ta = document.getElementById("list");
-					var tr = ta.insertRow(1);
-					var cell0 = tr.insertCell(0);
-					cell0.innerHTML = "<a href='/detail.html'  class='fa fa-music' aria-hidden='true'>歌曲</a>";
-					count++;
-					localStorage.setItem("count", count);
-				}
-				document.getElementById("delete_button").onclick = function () {
-					count = 1;
-					localStorage.setItem("count", count);
-					location.replace("list.html");
-				}
+				
+
 			});
 		</script>
 		

@@ -5,6 +5,7 @@
 		<meta charset="utf-8" />
 		<title>音乐收集网站</title>
 		<script src="./js/lib/jquery-1.11.1.js"></script>
+		<script src="./js/cookie.js"></script>
 		<link rel="stylesheet" href="./icon/css/font-awesome.css">
 		<style type="text/css">
 			* {
@@ -22,10 +23,15 @@
 				background-color: rgba(0, 0, 0, 0.6);
 			}
 			
-			.menu {
-				width: 1000px;
-				margin-left: 22.5px;
-				overflow: hidden;
+			.page::after{
+				position: fixed; 
+				top: 0; left: 0; right: 0; bottom: 0; 
+				margin: -30px; 
+				opacity: 100%; 
+				z-index: -1; 
+				content: ''; 
+				background:url(./image/indexbg.gif) no-repeat fixed 0px 0px;
+				background-size:100% 100%;
 			}
 			
 			.nav {
@@ -44,12 +50,17 @@
 				height: 30px;
 				line-height: 30px;
 				font-size: 12px;
-				color: #fff;
+				color: rgb(255, 255, 255);
 				text-decoration: none;
 			}
 			
 			.nav a:hover {
 				color: #83c3f3;
+			}
+
+			a{
+				color: rgb(255, 255, 255);
+				align-self: center;
 			}
 
 			.grid{
@@ -66,9 +77,9 @@
 				justify-items: center;
 				justify-self: center;
 				color: blue;
+				grid-template-columns: auto;
 				grid-template-areas: 
 					"header header header"
-					"side1 side2 side3"
 					"side1 side2 side3";
 			}
 
@@ -91,6 +102,15 @@
 			.grid p{
 				display: box;
 			}
+
+			h3{
+				color: rgb(255, 255, 255);
+			}
+
+			.sideimg{
+				height: 150px;
+				width: 300px;
+			}
 		</style>
 	</head>
  
@@ -111,11 +131,28 @@
 			</div>
 		</div>
 
-		<div class="grid">
-			<header id = "ani">大滚动页</header>
-			<side1>小列表</side1>
-			<side2>小列表</side2>
-			<side3>小列表</side3>
+		<div class="page">
+			<div class="grid">
+				<header id = "ani"><a href="/music.html?songname=至此流年各天涯"><img src="./image/1.png" alt=""></a></header>
+				<side1>
+					<td><h3>推荐位</h3><br></td>
+					<a href="/music.html?songname=钗头凤">钗头凤</a><br>
+					<a href="/music.html">藏</a><br>
+					<a href="/music.html">麻雀</a><br>
+					<a href="/music.html">年少有为</a><br>
+					<a href="/music.html">模特</a><br>
+					<a href="/music.html">素颜</a><br>
+				</side1>
+				<side2></side2>
+				<side3><h3>推荐位</h3><br>
+					<a href="/music.html?songname=当我唱起这首歌">当我唱起这首歌</a><br>
+					<a href="/music.html">雅俗共赏</a><br>
+					<a href="/music.html">小丑</a><br>
+					<a href="/music.html">消愁</a><br>
+					<a href="/music.html">黄昏</a><br>
+					<a href="/music.html">不染</a><br>
+				</side3>
+			</div>
 		</div>
 
 		<script>
